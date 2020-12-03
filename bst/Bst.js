@@ -12,24 +12,25 @@ export default class BST {
     this.root = null;
   }
 
-  add( root, value) {
-    if(root === null) {
+  add(root, value) {
+    if (root === null) {
       root = new Node(value, this.inc);
     } else {
       const currentNode = root;
-      if(currentNode.value > value) {
+      if (currentNode.value > value) {
         // greater
-        if(root.left === null ) {
+        if (root.left === null) {
+          console.log(`Inserting value #${value} in BST`);
           root.left = new Node(value, this.inc);
         } else {
           this.add(root.left, value);
         }
       } else {
         // lesser or equal
-        if(root.right === null) {
+        if (root.right === null) {
+          console.log(`Inserting value #${value} in BST`);
           root.right = new Node(value, this.inc);
         } else {
-          
           this.add(root.right, value);
         }
       }
@@ -39,7 +40,7 @@ export default class BST {
   }
 
   static inorderTraversal(root) {
-    if(root !== null) {
+    if (root !== null) {
       this.inorderTraversal(root.left);
       console.log(root.value);
       this.inorderTraversal(root.right);
@@ -47,7 +48,7 @@ export default class BST {
   }
 
   static preorderTraversal(root) {
-    if(root !== null) {
+    if (root !== null) {
       console.log(root.value);
       this.preorderTraversal(root.left);
       this.preorderTraversal(root.right);
@@ -55,10 +56,23 @@ export default class BST {
   }
 
   static postOrderTraversal(root) {
-    if(root !== null) {
+    if (root !== null) {
       this.postOrderTraversal(root.left);
       this.postOrderTraversal(root.right);
       console.log(root.value);
     }
+  }
+
+  static exists(root, value) {
+    if(root === null) {
+      return false;
+    }
+    if(value === root.value) {
+      return true;
+    }
+    if(value >= root.value) {
+      return this.exists(root.right, value);
+    }
+    return this.exists(root.left, value);
   }
 }
