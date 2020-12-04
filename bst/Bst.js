@@ -63,16 +63,63 @@ export default class BST {
     }
   }
 
-  static exists(root, value) {
-    if(root === null) {
-      return false;
+  static find(root, value) {
+    if (root === null) {
+      return root;
     }
-    if(value === root.value) {
-      return true;
+    if (value === root.value) {
+      return root;
     }
-    if(value >= root.value) {
-      return this.exists(root.right, value);
+    if (value >= root.value) {
+      return this.find(root.right, value);
     }
-    return this.exists(root.left, value);
+    return this.find(root.left, value);
+  }
+
+  delete(node, value) {
+    if (node === null) {
+      return null;
+    }
+    if (node.value > value) {
+      node.left = this.delete(node.left, value);
+      return node;
+    }
+    if (node.value < value) {
+      node.right = this.delete(node.right, value);
+      return node;
+    } else {
+      // node with no child
+      if (node.left === null && node.right === null) {
+        return null;
+      }
+      if (node.left === null) {
+        // node with single child
+        node.value = node.right.value;
+        node = this.delete(node.right, value);
+        return node;
+      }
+      if (node.right === null) {
+        // node with single child
+        node.value = node.left.value;
+        node = this.delete(node.left, value);
+        return node;
+      }
+      const minInRightSubtree = this.findMin(node.right);
+      node.value = minInRightSubtree.value;
+      node.right = this.delete(node.right, minInRightSubtree.value);
+    }
+    return node;
+  }
+
+  findMin(root) {
+    if (root === null) {
+      return null;
+    }
+    let currentMin = root;
+    while (currentMin.left !== null) {
+      currentMin = currentMin.left;
+    }
+
+    return currentMin;
   }
 }
