@@ -1,11 +1,14 @@
 export default class MaxHeap {
 
-  constructor() {
-    this.heap = [];
+  constructor(initializer = []) {
+    this.heap = initializer;
+    if (this.heap.length > 0) {
+      this.heapifyUp();
+    }
   }
 
   getLeftChildIndex(parentIndex) {
-    return 2 * (parentIndex + 1);
+    return 2 * (parentIndex) + 1;
   }
 
   getLeftChild(parentIndex) {
@@ -17,7 +20,7 @@ export default class MaxHeap {
   }
 
   getRightChildIndex(parentIndex) {
-    return 2 * (parentIndex + 2);
+    return 2 * (parentIndex )+ 2;
   }
 
   getParentIndex(childIndex) {
@@ -33,7 +36,7 @@ export default class MaxHeap {
   heapifyUp() {
     // start at last
     let index = this.heap.length - 1;
-    while( this.hasParent(index) && this.getParent(index) < this.heap[index]) {
+    while (this.hasParent(index) && this.getParent(index) < this.heap[index]) {
       const parentIndex = this.getParentIndex(index);
       this.swap(index, parentIndex);
       index = parentIndex;
@@ -69,16 +72,15 @@ export default class MaxHeap {
 
   heapifyDown() {
     let index = 0;
-    while(this.hasLeftChild(index)) {
+    while (this.hasLeftChild(index)) {
       let smallerValueIndex = this.getLeftChildIndex(index);
-      if(this.hasRightChild(index) && this.getLeftChild(index) < this.getRightChild(index)) {
+      if (this.hasRightChild(index) && this.getLeftChild(index) < this.getRightChild(index)) {
         smallerValueIndex = this.getRightChildIndex(index);
       }
 
-      if(this.heap[index] > this.heap[smallerValueIndex]) {
-        break;
-      } else {
-        this.swap(index, smallerValueIndex);;
+      if (this.heap[index] < this.heap[smallerValueIndex]) {
+        this.swap(index, smallerValueIndex);
+
       }
 
       index = smallerValueIndex;
@@ -86,9 +88,9 @@ export default class MaxHeap {
   }
 
   hasLeftChild(parentIdx) {
-    return (2*parentIdx + 1) < this.heap.length;
+    return (2 * parentIdx + 1) < this.heap.length;
   }
   hasRightChild(parentIdx) {
-    return (2*parentIdx + 2) < this.heap.length;
+    return (2 * parentIdx + 2) < this.heap.length;
   }
 }
